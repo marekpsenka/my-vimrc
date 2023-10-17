@@ -1,14 +1,35 @@
 " Do not make Vim more Vi-compatible
 set nocompatible
 
-" Forward slash is used when expanding file names.
-set shellslash
+" Plugins ------------------------------------------------------------------------------------------
 
-set colorcolumn=80,100,120
+" Disable filetype detection required for Vundle
+filetype off
 
-set guifont=Fira_Code_Retina:h9:cANSI:qDRAFT
+" set the runtime path to include Vundle and initialize
+set rtp+=C:\code\knobs\runtime\bundle\Vundle.vim
+call vundle#begin('C:\code\knobs\runtime\plugins')
 
-set encoding=utf-8
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'NLKNguyen/papercolor-theme'
+" Set `background` based on system settings, needs a colorscheme that supports both light and
+" dark backgrounds.
+Plugin 'vimpostor/vim-lumen'
+" Lightline plugin provides an improved status line
+Plugin 'itchyny/lightline.vim'
+" vim-gitbranch provides name of current git branch to the lightline plugin
+Plugin 'itchyny/vim-gitbranch'
+" Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+Plugin 'ctrlpvim/ctrlp.vim'
+
+" All Plugins must be added before the following line
+call vundle#end()            " required
+
+" Enable filetype plugins after Vundle lines
+filetype plugin indent on
+
+" Tabs ---------------------------------------------------------------------------------------------
 
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=4
@@ -17,8 +38,19 @@ set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
 " When on, a <Tab> in front of a line inserts blanks according to
-" 'shiftwidth'.  'tabstop' or 'softtabstop' is used in other places.  A
+" 'shiftwidth'.  'tabstop' or 'softtabstop' is used in other places.
 set smarttab
+
+" Misc editor settings -----------------------------------------------------------------------------
+
+" Forward slash is used when expanding file names.
+set shellslash
+
+set colorcolumn=80,100,120
+
+set guifont=Fira_Code_Retina:h9:cANSI:qDRAFT
+
+set encoding=utf-8
 
 " Do not ring the bell (beep or screen flash) for error messages
 set noeb
@@ -46,26 +78,6 @@ endif
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "remove scrollbar
-
-" Disable filetype detection required for Vundle
-filetype off
-
-" set the runtime path to include Vundle and initialize
-set rtp+=C:\code\knobs\runtime\bundle\Vundle.vim
-call vundle#begin('C:\code\knobs\runtime\plugins')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'NLKNguyen/papercolor-theme'
-" Set `background` based on system settings, needs a colorscheme that supports both light and
-" dark backgrounds.
-Plugin 'vimpostor/vim-lumen'
-
-" All Plugins must be added before the following line
-call vundle#end()            " required
-
-" Enable filetype plugins after Vundle lines
-filetype plugin indent on
 
 " When a file has been detected to have been changed outside of Vim and
 " it has not been changed inside of Vim, automatically read it again.
@@ -101,14 +113,8 @@ set cmdheight=1
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 
-" Ignore case when searching
-set ignorecase
-" When searching try to be smart about cases 
-set smartcase
-" Highlight search results
-set hlsearch
-" Makes search act like search in modern browsers
-set incsearch 
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
 
 " Enable syntax highlighting
 syntax enable 
@@ -117,6 +123,46 @@ syntax enable
 set nobackup
 set nowb
 set noswapfile
+
+" Status line --------------------------------------------------------------------------------------
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+
+" Search -------------------------------------------------------------------------------------------
+
+" Ignore case when searching
+set ignorecase
+" When searching try to be smart about cases 
+set smartcase
+" Highlight search results
+set hlsearch
+" Makes search act like search in modern browsers
+set incsearch 
+" For regular expressions turn magic on
+set magic
+
+" Wrapping and indentation -------------------------------------------------------------------------
 
 " When on, lines longer than the width of the window will wrap and
 " displaying continues on the next line.
@@ -141,6 +187,32 @@ set autoindent
 " programs, but can also be used for other languages.  'cindent' does
 set smartindent
 
+" Improvements for visual mode ---------------------------------------------------------------------
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+" Color Scheme -------------------------------------------------------------------------------------
+
 if has('win32')
 " Set background based on Windows system settings
     if system("powershell.exe Get-ItemProperty -Path
@@ -154,3 +226,26 @@ endif
 
 colorscheme papercolor
 
+" Lightline ----------------------------------------------------------------------------------------
+
+let g:lightline = {
+      \ 'colorscheme': 'PaperColor',
+      \ 'active': {
+      \   'left': [ ['mode', 'paste'],
+      \             ['gitbranch', 'readonly', 'filename', 'modified'] ],
+      \   'right': [ [ 'lineinfo' ], ['percent'], ['filetype', 'fileencoding', 'fileformat'] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \ },
+      \ 'separator': { 'left': ' ', 'right': ' ' },
+      \ 'subseparator': { 'left': ' ', 'right': ' ' }
+      \ }
