@@ -7,8 +7,8 @@ set nocompatible
 filetype off
 
 " set the runtime path to include Vundle and initialize
-set rtp+=C:\code\knobs\runtime\bundle\Vundle.vim
-call vundle#begin('C:\code\knobs\runtime\plugins')
+set rtp+=~\.vim_runtime\bundle\Vundle.vim
+call vundle#begin('~\.vim_runtime\plugins')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -64,7 +64,8 @@ set encoding=utf-8
 " Do not ring the bell (beep or screen flash) for error messages
 set noeb
 " When no beep or flash is wanted, use:
-set vb t_vb=
+set vb
+set t_vb=
 
 " Disable folding i.e in Markdown
 set nofoldenable
@@ -261,8 +262,11 @@ let g:lightline = {
 
 " Goyo ---------------------------------------------------------------------------------------------
 nnoremap <silent> <Leader>g :Goyo<CR>
+let g:goyo_width = 120
+let g:goyo_height = 85
+let g:goyo_linenr = 1 
 
-" Vimtex ----------------------------------------------------------------------------------------
+" Vimtex -------------------------------------------------------------------------------------------
 
 nnoremap <leader>lb :cclose<CR>
 nnoremap <leader>ll :VimtexCompile<CR>
@@ -282,3 +286,9 @@ let g:vimtex_compiler_latexmk = {
     \   '-interaction=nonstopmode',
     \ ],
     \}
+
+" --------------------------------------------------------------------------------------------------
+"
+let @i = '0i## [ ] o+0'
+let @o = '0i### [ ] o+0'
+let @p = '0xi#### [ ] o+0'
