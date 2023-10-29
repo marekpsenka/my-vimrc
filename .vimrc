@@ -22,6 +22,15 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'itchyny/vim-gitbranch'
 " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
 Plugin 'ctrlpvim/ctrlp.vim'
+" Quickly and easily switch between buffers
+Plugin 'jlanzarotta/bufexplorer'
+" Distraction-free writing in Vim.
+Plugin 'junegunn/goyo.vim'
+" Use latex from Vim
+Plugin 'lervag/vimtex'
+" Insert or delete brackets, parens, and quotes in pair
+Plugin 'LunarWatcher/auto-pairs'
+
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -249,3 +258,27 @@ let g:lightline = {
       \ 'separator': { 'left': ' ', 'right': ' ' },
       \ 'subseparator': { 'left': ' ', 'right': ' ' }
       \ }
+
+" Goyo ---------------------------------------------------------------------------------------------
+nnoremap <silent> <Leader>g :Goyo<CR>
+
+" Vimtex ----------------------------------------------------------------------------------------
+
+nnoremap <leader>lb :cclose<CR>
+nnoremap <leader>ll :VimtexCompile<CR>
+nnoremap <leader>lc :VimtexClean<CR>
+nnoremap <leader>lC :VimtexClean!<CR>
+
+let g:vimtex_compiler_latexmk = {
+    \ 'build_dir' : 'build',
+    \ 'callback' : 1,
+    \ 'continuous' : 1,
+    \ 'executable' : 'latexmk',
+    \ 'hooks' : [],
+    \ 'options' : [
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
