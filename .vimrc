@@ -292,3 +292,16 @@ let g:vimtex_compiler_latexmk = {
 let @i = '0i## [ ] o+0'
 let @o = '0i### [ ] o+0'
 let @p = '0xi#### [ ] o+0'
+
+" Control font size by Ctrl+Up and Ctrl+Down -------------------------------------------------------
+
+nnoremap <C-Up> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ '')<CR>
+nnoremap <C-Down> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)-1)',
+ \ '')<CR>
