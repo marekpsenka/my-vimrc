@@ -30,6 +30,8 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'lervag/vimtex'
 " Insert or delete brackets, parens, and quotes in pair
 Plugin 'LunarWatcher/auto-pairs'
+" Syntax file for PlantUML
+Plugin 'aklt/plantuml-syntax'
 
 
 " All Plugins must be added before the following line
