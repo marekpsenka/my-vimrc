@@ -7,8 +7,13 @@ set nocompatible
 filetype off
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~\.vim_runtime\bundle\Vundle.vim
-call vundle#begin('~\.vim_runtime\plugins')
+if has("win16") || has("win32")
+    set rtp+=~\.vim_runtime\bundle\Vundle.vim
+    call vundle#begin('~\.vim_runtime\plugins')
+else
+    set rtp+=~/.vim_runtime/bundle/Vundle.vim
+    call vundle#begin('~/.vim_runtime/plugins')
+endif
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -236,7 +241,7 @@ if has('win32')
     endif
 endif
 
-colorscheme papercolor
+colorscheme PaperColor
 
 " Lightline ----------------------------------------------------------------------------------------
 
