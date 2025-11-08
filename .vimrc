@@ -3,47 +3,41 @@ set nocompatible
 
 " Plugins ------------------------------------------------------------------------------------------
 
-" Disable filetype detection required for Vundle
-filetype off
-
 " set the runtime path to include Vundle and initialize
 if has("win16") || has("win32")
-    set rtp+=~\.vim_runtime\bundle\Vundle.vim
-    call vundle#begin('~\.vim_runtime\plugins')
+    call plug#begin('~\.vim\plugins')
 else
-    set rtp+=~/.vim_runtime/bundle/Vundle.vim
-    call vundle#begin('~/.vim_runtime/plugins')
+    call plug#begin('~/.vim/plugins')
 endif
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'NLKNguyen/papercolor-theme'
+Plug 'NLKNguyen/papercolor-theme'
 " Set `background` based on system settings, needs a colorscheme that supports both light and
 " dark backgrounds.
-Plugin 'vimpostor/vim-lumen'
+Plug 'vimpostor/vim-lumen'
 " Lightline plugin provides an improved status line
-Plugin 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'
 " vim-gitbranch provides name of current git branch to the lightline plugin
-Plugin 'itchyny/vim-gitbranch'
+Plug 'itchyny/vim-gitbranch'
 " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Quickly and easily switch between buffers
-Plugin 'jlanzarotta/bufexplorer'
+Plug 'jlanzarotta/bufexplorer'
 " Distraction-free writing in Vim.
-Plugin 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim'
 " Use latex from Vim
-Plugin 'lervag/vimtex'
+Plug 'lervag/vimtex'
 " Insert or delete brackets, parens, and quotes in pair
-Plugin 'LunarWatcher/auto-pairs'
+Plug 'LunarWatcher/auto-pairs'
 " Syntax file for PlantUML
-Plugin 'aklt/plantuml-syntax'
-
+Plug 'aklt/plantuml-syntax'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " All Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 
-" Enable filetype plugins after Vundle lines
-filetype plugin indent on
+" plug#end() automatically executes the line below
+" filetype plugin indent on
 
 " Tabs ---------------------------------------------------------------------------------------------
 
@@ -321,3 +315,6 @@ autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
 if exists("g:neovide")
     set guicursor=n:block-blinkwait350-blinkon350-blinkoff350,i:ver25-blinkwait350-blinkon350-blinkoff350
 endif
+
+" FZF - Ripgrep ------------------------------------------------------------------------------------
+nnoremap <silent> <Leader>rg :RG<CR>
