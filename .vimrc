@@ -64,7 +64,7 @@ set shellslash
 
 set colorcolumn=80,100,120
 
-set guifont=Fira_Code_Retina:h9:cANSI:qDRAFT
+set guifont=Fira_Code_Retina:h12:cANSI:qDRAFT
 
 set encoding=utf-8
 
@@ -241,7 +241,7 @@ if has('win32')
     endif
 endif
 
-colorscheme PaperColor
+colorscheme papercolor
 
 " Lightline ----------------------------------------------------------------------------------------
 
@@ -312,3 +312,12 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
  \ ':h\zs\d\+',
  \ '\=eval(submatch(0)-1)',
  \ '')<CR>
+
+" Change indentation settings for Markdown ---------------------------------------------------------
+autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 
+
+" Configure blinking cursor for Neovide ------------------------------------------------------------
+
+if exists("g:neovide")
+    set guicursor=n:block-blinkwait350-blinkon350-blinkoff350,i:ver25-blinkwait350-blinkon350-blinkoff350
+endif
