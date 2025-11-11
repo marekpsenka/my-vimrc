@@ -316,5 +316,12 @@ if exists("g:neovide")
     set guicursor=n:block-blinkwait350-blinkon350-blinkoff350,i:ver25-blinkwait350-blinkon350-blinkoff350
 endif
 
+" Fullscreen toggle for Neovide --------------------------------------------------------------------
+"
+if exists('g:neovide') && g:neovide
+    " Map <F11> to toggle the g:neovide_fullscreen variable
+    nnoremap <silent> <F11> :let g:neovide_fullscreen = !get(g:, 'neovide_fullscreen', 0)<CR>
+endif
+
 " FZF - Ripgrep ------------------------------------------------------------------------------------
-nnoremap <silent> <Leader>rg :RG<CR>
+nnoremap <silent> <Leader>rg :RG!<CR>
