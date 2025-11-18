@@ -3,10 +3,12 @@ set nocompatible
 
 " Plugins ------------------------------------------------------------------------------------------
 
-" set the runtime path to include Vundle and initialize
+" set the runtime path to include Vim.Plug and initialize
 if has("win16") || has("win32")
+    set rtp+=~\.vim\
     call plug#begin('~\.vim\plugins')
 else
+    set rtp+=~/.vim/
     call plug#begin('~/.vim/plugins')
 endif
 
@@ -32,6 +34,7 @@ Plug 'LunarWatcher/auto-pairs'
 Plug 'aklt/plantuml-syntax'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
 
 " All Plugins must be added before the following line
 call plug#end()            " required
@@ -325,3 +328,13 @@ endif
 
 " FZF - Ripgrep ------------------------------------------------------------------------------------
 nnoremap <silent> <Leader>rg :RG!<CR>
+
+" NerdTree -----------------------------------------------------------------------------------------
+nnoremap <leader>nc :NERDTreeFocus<CR>
+nnoremap <leader>nt :NERDTree<CR>
+nnoremap <leader>ng :NERDTreeVCS<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
