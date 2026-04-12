@@ -12,7 +12,7 @@ else
     call plug#begin('~/.vim/plugins')
 endif
 
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'cocopon/iceberg.vim'
 " Set `background` based on system settings, needs a colorscheme that supports both light and
 " dark backgrounds.
 Plug 'vimpostor/vim-lumen'
@@ -238,7 +238,7 @@ if has('win32')
     endif
 endif
 
-colorscheme papercolor
+colorscheme iceberg
 
 " Lightline ----------------------------------------------------------------------------------------
 
